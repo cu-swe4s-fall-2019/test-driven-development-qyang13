@@ -2,7 +2,7 @@ import math_lib as ml
 import data_viz as dv
 import get_data as gd
 import viz
-import os
+import sys
 import random
 import unittest
 import statistics as stats
@@ -68,6 +68,37 @@ class Test_Math_Lib(unittest.TestCase):
             rand_ary.append(random.random())
         self.assertAlmostEqual(ml.list_stdev(rand_ary),stats.stdev(rand_ary), places=0)
 
+
+class Test_Get_Data(unittest.TestCase):
+    def test_read_stdin_col_invalid_file(self):
+        sys.stdin = 'daa.txt'
+        self.assertRaises(FileNotFoundError,gd.read_stdin_col,3)
+
+    def test_read_stdin_col_invalid_index(self):
+        sys.stdin = 'data.txt'
+        f = open ("data.txt", "w")
+        f.write("1\t2\t3\n2\t3\t4\n5\t6\t7\n")
+        f.close()
+        self.assertRaises(IndexError,gd.read_stdin_col,6)
+
+    def test_read_stdin_col_const(self):
+        sys.stdin = 'data.txt'
+        f = open ("data.txt", "w")
+        f.write("1\t2\t3\n2\t3\t4\n5\t6\t7\n")
+        f.close()
+        self.assertEqual(gd.read_stdin_col(0),[1,2,5])
+
+    def test_read_stdin_col_rand(self):
+        sys.stdin = 'data.txt'
+        A = []
+        for i in range(9):
+            A.append(str(random.randint(1,10)))
+        f = open ("data.txt", "w")
+        f.write(A[0]+'\t'+A[1]+'\t'+A[2]+'\n')
+        f.write(A[3]+'\t'+A[4]+'\t'+A[5]+'\n')
+        f.write(A[6]+'\t'+A[7]+'\t'+A[8]+'\n')
+        f.close()
+        self.assertEqual(gd.read_stdin_col(0),[int(A[0]),int(A[3]),int(A[6])])
 
 if __name__ == '__main__':
     unittest.main()
