@@ -1,4 +1,3 @@
-
-for i in `seq 1 100`; do
-    echo $RANDOM $RANDOM
+for i in `seq 1 1000`; do
+    echo $RANDOM$'\t'$RANDOM
 done

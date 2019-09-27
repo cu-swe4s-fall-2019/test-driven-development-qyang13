@@ -1,5 +1,6 @@
 import sys
 
+
 def read_stdin_col(col_num):
     '''
     Takes column number and return an array of numbers from the
@@ -12,21 +13,21 @@ def read_stdin_col(col_num):
     Output: nums
     A numerical array containing numbers from that spefied column
     '''
-    try:
-        f = open(sys.stdin)
-    except  FileNotFoundError:
-        raise FileNotFoundError("The input file does not exist")
+    nums = []
+    if sys.stdin is None:
+        raise ValueError("Input data should be passed through STDIN")
         return None
 
-    nums = []
-
-    for l in f:
+    for l in sys.stdin:
         file_split = l.rstrip().split("\t")
+        # Check if index is out of bound
+        if col_num >= len(file_split) or col_num < 0:
+            raise IndexError("Invalid column index number")
+            return None
         try:
             nums.append(int(file_split[col_num]))
-        except IndexError:
-            f.close()
-            raise IndexError("Index out of bound")
+        except ValueError:
+            print("Input value is not numerical")
+            continue
 
-    f.close()
     return nums

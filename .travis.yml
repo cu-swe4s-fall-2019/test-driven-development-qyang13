@@ -10,7 +10,8 @@ before_install:
     - conda activate test
     - conda install -y pycodestyle
     - conda install --yes python=3.6
-      
+
 script:
-    - bash test_viz.sh
-    - python test_viz.py
+    - python -m unittest unit_test.py
+    - pycodestyle *.py
+    - bash gen_data.sh | python viz.py --out_file hist.png --plot_type hist
